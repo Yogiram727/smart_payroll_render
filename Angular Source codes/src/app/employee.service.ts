@@ -4,14 +4,15 @@ import { Observable, throwError } from 'rxjs';
 import { Employee } from './employee';
 import { Message } from './Message';
 import { catchError } from 'rxjs';
-
+import { environment } from 'src/environments/environment';
 @Injectable({
   providedIn: 'root'
 })
 export class EmployeeService {
 
   // private baseUrl="http://localhost:8080/api/v1/employees"
-  private baseUrl="http://localhost:8080/api/employees"
+  // private baseUrl="http://localhost:8080/api/employees"
+private baseUrl = `${environment.apiUrl}/api/employees`;
   constructor(private httpClient:HttpClient) { }
 
   getEmployeesList():Observable<Employee[]>{

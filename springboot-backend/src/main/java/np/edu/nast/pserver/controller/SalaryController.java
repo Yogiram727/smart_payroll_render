@@ -20,7 +20,7 @@ import np.edu.nast.pserver.exception.ResourceNotFoundException;
 import np.edu.nast.pserver.model.Salary;
 import np.edu.nast.pserver.repository.EmployeeRepository;
 import np.edu.nast.pserver.repository.SalaryRepository;
-@CrossOrigin(origins="http://localhost:4200")
+// @CrossOrigin(origins="http://localhost:4200")
 @RestController
 @RequestMapping("/api/salaries")
 public class SalaryController {
