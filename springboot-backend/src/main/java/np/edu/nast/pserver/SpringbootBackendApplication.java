@@ -19,12 +19,13 @@ public class SpringbootBackendApplication {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOriginPatterns(
-                            "https://deploysmartpayroll.netlify.app",
-                            "https://deploysmartpayroll.netlify.app/"
-                            // "http://localhost:4200",
-                            // "http://localhost:8080"
-                        )
+                        // .allowedOriginPatterns(
+                        //     "https://deploysmartpayroll.netlify.app",
+                        //     "https://deploysmartpayroll.netlify.app/"
+                        //     // "http://localhost:4200",
+                        //     // "http://localhost:8080"
+                        // )
+                        .allowedOriginPatterns("*")
                         .allowedMethods("*")
                         .allowedHeaders("*")
                         .allowCredentials(true)
