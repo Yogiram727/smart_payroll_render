@@ -1,9 +1,0 @@
-[build]
-builder = "maven"
-buildCommand = "./mvnw clean package -DskipTests"
-
-[deploy]
-startCommand = "java -jar target/springboot-backend-0.0.1-SNAPSHOT.jar"
-
-[build.environment]
-JAVA_VERSION = "17"
