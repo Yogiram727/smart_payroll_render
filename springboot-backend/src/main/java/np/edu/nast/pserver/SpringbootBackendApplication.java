@@ -20,7 +20,7 @@ public class SpringbootBackendApplication {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOriginPatterns(
-                            "https://*.netlify.app",
+                            "https://deploysmartpayroll.netlify.app",
                             "http://localhost:4200",
                             "http://localhost:8080"
                         )
