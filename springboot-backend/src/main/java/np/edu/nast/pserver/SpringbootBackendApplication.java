@@ -21,7 +21,7 @@ public class SpringbootBackendApplication {
                 registry.addMapping("/**")
                         .allowedOriginPatterns(
                             "https://deploysmartpayroll.netlify.app",
-                            "https://deploysmartpayroll.netlify.app/",
+                            "https://deploysmartpayroll.netlify.app/"
                             // "http://localhost:4200",
                             // "http://localhost:8080"
                         )
