@@ -1,7 +1,8 @@
 # Build stage
 FROM maven:3.8.5-openjdk-17 AS build
 COPY . .
-RUN ./mvnw clean package -DskipTests
+# We use 'mvn' instead of './mvnw' to avoid permission issues
+RUN mvn clean package -DskipTests
 
 # Run stage
 FROM eclipse-temurin:17-jdk-alpine
