@@ -1,0 +1,10 @@
+Neon........
+url: jdbc:postgresql://ep-muddy-shape-ak2dhun5-pooler.c-3.us-west-2.aws.neon.tech/neondb?sslmode=require
+username: neondb_owner
+password: npg_DtTpy0nu5FBJ
+
+
+Render ---------
+url : jdbc:postgresql://dpg-d5um4fali9vc739n9fk0-a:5432/payroll_db_kutv
+password: GMwmcX7dt7XD6viFKzoVrmdhQmTg3Nap
+username: db_admin
