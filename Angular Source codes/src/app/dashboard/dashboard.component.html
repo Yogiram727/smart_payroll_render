@@ -1,12 +1,47 @@
-<div class="container mt-5 text-center">
-  <h3>Employee Role Distribution</h3>
-  <div style="max-width: 300px; margin: 0 auto">
-    <canvas
-      baseChart
-      [data]="pieChartData"
-      [type]="pieChartType"
-      [options]="pieChartOptions"
-    >
-    </canvas>
+<div class="dashboard-container">
+  <div class="dashboard-background">
+    <div class="animated-gradient"></div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="row">
+      <div class="col-12">
+        <div class="dashboard-header text-center mb-5">
+          <h1 class="dashboard-title">Employee Dashboard</h1>
+          <p class="dashboard-subtitle">Role Distribution Overview</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-md-8 col-lg-6">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div class="chart-title-wrapper">
+              <i class="fas fa-chart-pie chart-header-icon"></i>
+              <div>
+                <h4 class="chart-title">Employee Role Distribution</h4>
+                <p class="chart-subtitle">Breakdown by job designation</p>
+              </div>
+            </div>
+          </div>
+          <div class="chart-body">
+            <div class="chart-container">
+              <canvas
+                baseChart
+                [data]="pieChartData"
+                [type]="pieChartType"
+                [options]="pieChartOptions"
+              >
+              </canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
+<!-- Add Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">

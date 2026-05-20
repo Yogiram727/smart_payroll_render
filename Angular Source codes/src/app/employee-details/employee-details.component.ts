@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Employee } from '../employee';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeeService } from '../employee.service';
 
 @Component({
@@ -9,92 +9,100 @@ import { EmployeeService } from '../employee.service';
   styleUrls: ['./employee-details.component.css']
 })
 export class EmployeeDetailsComponent implements OnInit {
-  id:number
-  employee:Employee
-  constructor(private route:ActivatedRoute,private employeeService:EmployeeService){}
+  id: number;
+  employee: Employee;
+  currentDate: Date = new Date();
+
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private employeeService: EmployeeService
+  ) {
+    this.employee = new Employee();
+  }
 
   ngOnInit(): void {
-      this.id=this.route.snapshot.params['id'];
-      this.employee=new Employee();
-      this.employeeService.getEmployeeById(this.id).subscribe(data=>{
-        this.employee=data;
-      })
+    this.id = this.route.snapshot.params['id'];
+    this.employeeService.getEmployeeById(this.id).subscribe(data => {
+      this.employee = data;
+    });
   }
+
+  calculateExperience(): number {
+    if (!this.employee.dateofJoining) return 0;
+    const joinDate = new Date(this.employee.dateofJoining);
+    const today = new Date();
+    const years = today.getFullYear() - joinDate.getFullYear();
+    const months = today.getMonth() - joinDate.getMonth();
+    if (months < 0) {
+      return years - 1;
+    }
+    return years;
+  }
+
+  getInitials(firstName: string, lastName: string): string {
+    if (!firstName && !lastName) return '?';
+    const first = firstName ? firstName.charAt(0).toUpperCase() : '';
+    const last = lastName ? lastName.charAt(0).toUpperCase() : '';
+    return first + last;
+  }
+
   printEmployeeDetails() {
     const printContent = document.getElementById('printContent');
-
+    
     if (printContent) {
-      // Store the original value of overflow property of the body
-      const originalOverflow = document.body.style.overflow;
-
-      // Hide the header, footer, and print button
-      const header = document.getElementsByTagName('header')[0];
-      const footer = document.getElementsByTagName('footer')[0];
-      const printButton = document.getElementById('printButton');
-
-      if (header) {
-        header.style.display = 'none';
+      const originalTitle = document.title;
+      document.title = `Employee_${this.employee.employeeId}_${this.employee.firstName}`;
+      
+      const printWindow = window.open('', '_blank');
+      if (printWindow) {
+        printWindow.document.write(`
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Employee Details - ${this.employee.firstName} ${this.employee.lastName}</title>
+            <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+            <style>
+              body {
+                font-family: 'Inter', sans-serif;
+                margin: 0;
+                padding: 20px;
+                background: white;
+              }
+              .print-content {
+                max-width: 800px;
+                margin: 0 auto;
+              }
+              @media print {
+                body {
+                  padding: 0;
+                  margin: 0;
+                }
+                .no-print {
+                  display: none;
+                }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="print-content">
+              ${printContent.innerHTML}
+            </div>
+          </body>
+          </html>
+        `);
+        printWindow.document.close();
+        printWindow.print();
+        printWindow.close();
       }
-
-      if (footer) {
-        footer.style.display = 'none';
-      }
-
-      if (printButton) {
-        printButton.style.display = 'none';
-      }
-
-      // Show only the print content
-      const printContentHTML = printContent.innerHTML;
-      const originalContent = document.body.innerHTML;
-      document.body.innerHTML = printContentHTML;
-
-      // Set the overflow property of the body to 'visible' to show the entire content in the print view
-      document.body.style.overflow = 'visible';
-
-      // Trigger the print dialog
-      window.print();
-
-      // Restore the original content and layout
-      document.body.innerHTML = originalContent;
-
-      if (header) {
-        header.style.display = 'block';
-      }
-
-      if (footer) {
-        footer.style.display = 'block';
-      }
-
-      if (printButton) {
-        printButton.style.display = 'block';
-      }
-
-      // Restore the original overflow property
-      document.body.style.overflow = originalOverflow;
+      
+      document.title = originalTitle;
     } else {
       console.error("Element with id 'printContent' not found.");
     }
   }
 
-
-
-
-
-
-
-
-  // printEmployeeDetails() {
-  //   // Show the print view
-  //   const printContent = document.getElementById("printContent");
-  //   printContent.style.display = "block";
-
-  //   // Trigger the print dialog
-  //   window.print();
-
-  //   // Hide the print view after printing
-  //   printContent.style.display = "none";
-  // }
-
-
+  goBack(): void {
+    this.router.navigate(['/employees']);
+  }
 }

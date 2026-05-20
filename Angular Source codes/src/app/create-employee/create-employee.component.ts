@@ -12,66 +12,68 @@ import { NgForm } from '@angular/forms';
 })
 export class CreateEmployeeComponent implements OnInit {
 
-  employee:Employee=new Employee();
-  msg:Message=new Message();
+  employee: Employee = new Employee();
+  msg: Message = new Message();
   errorMessage: string = '';
-  constructor(private employeeService:EmployeeService,private router:Router){}
+  successMessage: string = '';
+  currentStep: number = 1;
+
+  constructor(
+    private employeeService: EmployeeService,
+    private router: Router
+  ) {}
+
   ngOnInit(): void {
-      
+    // Initialize any default values
   }
 
-  // saveEmployee(){
-  //   this.employeeService.createEmployee(this.employee).subscribe(data=>{
-  //     console.log(data)
-  //     this.goToEmployeeList();
-  //   },
-  //   error=>console.log(error)); 
-  // }
+  nextStep(): void {
+    if (this.currentStep < 3) {
+      this.currentStep++;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  previousStep(): void {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
 
   saveEmployee() {
     this.employeeService.createEmployee(this.employee).subscribe(
       () => {
         console.log('Employee added successfully');
-        this.errorMessage = ''; // Clear the error message when employee is successfully created
-        this.goToEmployeeList();
+        this.successMessage = 'Employee created successfully! Redirecting...';
+        this.errorMessage = '';
+        
+        setTimeout(() => {
+          this.goToEmployeeList();
+        }, 2000);
       },
       (error) => {
         console.error(error);
-        this.errorMessage = error; // Store the error message
+        this.errorMessage = error.message || 'Failed to create employee. Please try again.';
+        this.successMessage = '';
       }
     );
   }
 
-
-  goToEmployeeList(){
+  goToEmployeeList() {
     this.router.navigate(['/employees']);
   }
 
-  // onSubmit(){
-   
-  //  // console.log(this.employee);
-  // //  var myval= this.employeeService.checkEmployeeEmailExists(this.employee.email);
-  // //  console.log(myval);
-
-    
-  //  this.saveEmployee();
-  // }
-  onSubmit(form:NgForm){
-    if(form.invalid){
-      form.controls['firstName'].markAsTouched();
-      form.controls['lastName'].markAsTouched();
-      form.controls['email'].markAsTouched();
-      // form.controls['basicSalary'].markAsTouched();
+  onSubmit(form: NgForm) {
+    if (form.invalid) {
+      // Mark all fields as touched to show validation errors
+      Object.keys(form.controls).forEach(key => {
+        form.controls[key].markAsTouched();
+      });
+      this.errorMessage = 'Please fill all required fields correctly.';
       return;
-    }
-    else{
+    } else {
       this.saveEmployee();
     }
-   
   }
-
-  doChange(){
-    alert(this.employee.email);
-  }
-
 }

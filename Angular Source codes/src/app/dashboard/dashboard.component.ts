@@ -29,7 +29,7 @@ export class DashboardComponent implements OnInit {
     this.employeeService.getEmployeesList().subscribe(
       employees => {
         this.prepareChartData(employees);
-        console.log('Employees:', employees); // To check data
+        console.log('Employees:', employees);
       },
       error => {
         console.error('Error fetching employee data', error);
@@ -45,7 +45,6 @@ export class DashboardComponent implements OnInit {
       roleCount[role] = (roleCount[role] || 0) + 1;
     });
 
-    // Assign new object to trigger change detection
     this.pieChartData = {
       labels: Object.keys(roleCount),
       datasets: [{ data: Object.values(roleCount) }]

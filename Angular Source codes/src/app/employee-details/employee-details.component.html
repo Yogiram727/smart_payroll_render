@@ -1,117 +1,199 @@
-<!-- employee-details.component.html -->
+<div class="employee-details-container">
+  <!-- Animated Background -->
+  <div class="details-background">
+    <div class="animated-gradient"></div>
+    <div class="floating-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+  </div>
 
-<style>
-  @media print {
-    @page {
-      size: auto;
-      margin: 0;
-    }
-    body {
-      margin: 1.6cm;
-    }
-    button {
-      display: none; /* Hide print button */
-    }
-  }
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10">
+        <div class="details-card animate__animated animate__fadeInUp">
+          
+          <!-- Header -->
+          <div class="details-header">
+            <div class="header-icon">
+              <i class="fas fa-id-card"></i>
+            </div>
+            <div class="header-text">
+              <h2 class="details-title">Employee Information</h2>
+              <p class="details-subtitle">Complete employee profile & details</p>
+            </div>
+            <div class="header-badge">
+              <i class="fas fa-print"></i>
+              ID Card
+            </div>
+          </div>
 
-  #printContent {
-    width: 600px;
-    margin: auto;
-    border: 1px solid #000;
-    padding: 25px;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f9f9f9;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
+          <!-- Print Content -->
+          <div id="printContent" class="print-content">
+            <!-- Company Header for Print -->
+            <div class="print-header">
+              <div class="company-logo">
+                <svg width="50" height="50" viewBox="0 0 32 32" fill="none">
+                  <rect x="2" y="2" width="12" height="12" rx="3" fill="#667eea"/>
+                  <rect x="18" y="2" width="12" height="12" rx="3" fill="rgba(102,126,234,0.4)"/>
+                  <rect x="2" y="18" width="12" height="12" rx="3" fill="rgba(102,126,234,0.4)"/>
+                  <rect x="18" y="18" width="12" height="12" rx="3" fill="rgba(102,126,234,0.7)"/>
+                </svg>
+              </div>
+              <div class="company-info">
+                <h2>ESM Platform</h2>
+                <p>Employee Management System</p>
+                <p class="print-date">Generated: {{ currentDate | date: 'fullDate' }}</p>
+              </div>
+            </div>
 
-  h2 {
-    text-align: center;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #000;
-    padding-bottom: 10px;
-  }
+            <h3 class="print-title">EMPLOYEE DETAILS SLIP</h3>
 
-  .row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 12px;
-  }
+            <!-- Employee ID Card Style -->
+            <div class="employee-id-card">
+              <div class="id-card-header">
+                <div class="id-avatar">
+                  {{ getInitials(employee.firstName, employee.lastName) }}
+                </div>
+                <div class="id-title">
+                  <h4>{{ employee.firstName }} {{ employee.lastName }}</h4>
+                  <p>{{ employee.designation || 'Employee' }}</p>
+                </div>
+              </div>
+            </div>
 
-  .label {
-    font-weight: bold;
-    width: 45%;
-  }
+            <!-- Two Column Layout -->
+            <div class="details-grid">
+              <!-- Left Column - Personal Info -->
+              <div class="details-section">
+                <div class="section-header">
+                  <i class="fas fa-user-circle"></i>
+                  <h4>Personal Information</h4>
+                </div>
+                <div class="info-row">
+                  <span class="label">Employee ID:</span>
+                  <span class="value">{{ employee.employeeId }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">First Name:</span>
+                  <span class="value">{{ employee.firstName }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Last Name:</span>
+                  <span class="value">{{ employee.lastName }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Email:</span>
+                  <span class="value">{{ employee.email }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Date of Birth:</span>
+                  <span class="value">{{ employee.dateofBirth }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Gender:</span>
+                  <span class="value">
+                    <span class="gender-badge">{{ employee.gender }}</span>
+                  </span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Marital Status:</span>
+                  <span class="value">{{ employee.maritalStatus }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Phone Number:</span>
+                  <span class="value">{{ employee.phoneNumber }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Address:</span>
+                  <span class="value">{{ employee.address }}</span>
+                </div>
+              </div>
 
-  .value {
-    width: 50%;
-    text-align: left;
-  }
+              <!-- Right Column - Professional Info -->
+              <div class="details-section">
+                <div class="section-header">
+                  <i class="fas fa-briefcase"></i>
+                  <h4>Professional Information</h4>
+                </div>
+                <div class="info-row">
+                  <span class="label">Designation:</span>
+                  <span class="value">
+                    <span class="designation-badge">{{ employee.designation }}</span>
+                  </span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Department:</span>
+                  <span class="value">
+                    <span class="dept-badge">{{ employee.department }}</span>
+                  </span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Date of Joining:</span>
+                  <span class="value">{{ employee.dateofJoining }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Experience:</span>
+                  <span class="value">{{ calculateExperience() }} years</span>
+                </div>
+              </div>
+            </div>
 
-  button {
-    margin: 20px auto;
-    display: block;
-    padding: 10px 20px;
-    font-size: 16px;
-  }
-</style>
+            <!-- Salary Section -->
+            <div class="salary-section">
+              <div class="section-header">
+                <i class="fas fa-money-bill-wave"></i>
+                <h4>Salary Information</h4>
+              </div>
+              <div class="salary-card">
+                <div class="salary-amount">
+                  <span class="salary-label">Basic Salary</span>
+                  <span class="salary-value">₹{{ employee.basicSalary | number }}</span>
+                </div>
+                <div class="salary-breakdown">
+                  <div class="breakdown-item">
+                    <span>HRA (40%)</span>
+                    <strong>₹{{ (employee.basicSalary * 0.4) | number }}</strong>
+                  </div>
+                  <div class="breakdown-item">
+                    <span>DA (20%)</span>
+                    <strong>₹{{ (employee.basicSalary * 0.2) | number }}</strong>
+                  </div>
+                  <div class="breakdown-item total">
+                    <span>Total CTC</span>
+                    <strong>₹{{ (employee.basicSalary * 1.6) | number }}</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-<div id="printContent">
-  <h2>Employee Information Slip</h2>
+            <!-- Footer Notes -->
+            <div class="print-footer">
+              <div class="note">
+                <i class="fas fa-info-circle"></i>
+                This is an official document of ESM Platform. Valid with authorized signature.
+              </div>
+              <div class="signature">
+                <div>For ESM Platform</div>
+                <div class="sign-line">Authorized Signatory</div>
+              </div>
+            </div>
+          </div>
 
-  <div class="row">
-    <div class="label">Employee ID:</div>
-    <div class="value">{{ employee.employeeId }}</div>
-  </div>
-  <div class="row">
-    <div class="label">First Name:</div>
-    <div class="value">{{ employee.firstName }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Last Name:</div>
-    <div class="value">{{ employee.lastName }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Email:</div>
-    <div class="value">{{ employee.email }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Date of Birth:</div>
-    <div class="value">{{ employee.dateofBirth }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Gender:</div>
-    <div class="value">{{ employee.gender }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Address:</div>
-    <div class="value">{{ employee.address }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Phone Number:</div>
-    <div class="value">{{ employee.phoneNumber }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Designation:</div>
-    <div class="value">{{ employee.designation }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Department:</div>
-    <div class="value">{{ employee.department }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Marital Status:</div>
-    <div class="value">{{ employee.maritalStatus }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Date of Joining:</div>
-    <div class="value">{{ employee.dateofJoining }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Basic Salary:</div>
-    <div class="value">{{ employee.basicSalary }}</div>
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <button class="btn-print" (click)="printEmployeeDetails()">
+              <i class="fas fa-print"></i>
+              Print Details
+            </button>
+            <button class="btn-back" (click)="goBack()">
+              <i class="fas fa-arrow-left"></i>
+              Back to List
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-
-<!-- Print Button -->
-<button (click)="printEmployeeDetails()">Print</button>

@@ -1,53 +1,100 @@
-<div class="app-wrapper">
-  <nav class="navbar navbar-expand-sm custom-navbar shadow-sm">
-    <div class="container-fluid">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a routerLink="dashboard" routerLinkActive="active" class="nav-link"
-            >Dashboard</a
-          >
-        </li>
-        <li class="nav-item">
-          <a routerLink="employees" routerLinkActive="active" class="nav-link"
-            >Employee List</a
-          >
-        </li>
-        <li class="nav-item">
-          <a
-            routerLink="create-employee"
-            routerLinkActive="active"
-            class="nav-link"
-            >Add Employee</a
-          >
-        </li>
-        <li class="nav-item">
-          <a routerLink="salaries" routerLinkActive="active" class="nav-link"
-            >View Salary</a
-          >
-        </li>
-        <li class="nav-item">
-          <a routerLink="add-salary" routerLinkActive="active" class="nav-link"
-            >Add Salary</a
-          >
-        </li>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<div class="esm-shell">
+
+  <!-- ── Premium Navbar ──────────────────────────────────── -->
+  <nav *ngIf="!isLoginPage" class="esm-nav">
+    <div class="esm-nav-inner">
+
+      <!-- Brand with animated logo -->
+      <a class="esm-brand" routerLink="dashboard">
+        <div class="nav-logo-mark">
+          <svg viewBox="0 0 32 32" fill="none">
+            <rect x="2" y="2" width="12" height="12" rx="3" fill="#667eea"/>
+            <rect x="18" y="2" width="12" height="12" rx="3" fill="rgba(102,126,234,0.4)"/>
+            <rect x="2" y="18" width="12" height="12" rx="3" fill="rgba(102,126,234,0.4)"/>
+            <rect x="18" y="18" width="12" height="12" rx="3" fill="rgba(102,126,234,0.7)"/>
+          </svg>
+        </div>
+        <span class="nav-brand-name">ESM Platform</span>
+        <span class="nav-badge">PREMIUM</span>
+      </a>
+
+      <!-- Navigation Links -->
+      <ul class="esm-nav-links">
+        <li><a routerLink="dashboard" routerLinkActive="active" class="nav-link">
+          <i class="fas fa-chart-line"></i>
+          <span>Dashboard</span>
+        </a></li>
+        <li><a routerLink="employees" routerLinkActive="active" class="nav-link">
+          <i class="fas fa-users"></i>
+          <span>Employees</span>
+        </a></li>
+        <li><a routerLink="create-employee" routerLinkActive="active" class="nav-link">
+          <i class="fas fa-user-plus"></i>
+          <span>Add Employee</span>
+        </a></li>
+        <li><a routerLink="salaries" routerLinkActive="active" class="nav-link">
+          <i class="fas fa-money-bill-wave"></i>
+          <span>Salaries</span>
+        </a></li>
+        <li><a routerLink="add-salary" routerLinkActive="active" class="nav-link">
+          <i class="fas fa-plus-circle"></i>
+          <span>Add Salary</span>
+        </a></li>
       </ul>
-      <button
-        (click)="logout()"
-        class="btn btn-warning fw-bold px-3 logout-button"
-      >
-        Logout
-      </button>
+
+      <!-- Right side with user info and logout -->
+      <div class="nav-right">
+        <div class="user-info">
+          <div class="user-avatar">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="user-details">
+            <span class="user-name">{{ currentUser }}</span>
+            <span class="user-role">Administrator</span>
+          </div>
+        </div>
+        
+        <button (click)="logout()" class="esm-logout-btn">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Sign Out</span>
+        </button>
+      </div>
+
     </div>
+    <!-- Animated underline -->
+    <div class="nav-gold-line"></div>
   </nav>
 
-  <main class="container my-4 flex-grow-1">
-    <h1 class="text-center mt-4">{{ title }}</h1>
-    <router-outlet></router-outlet>
+  <!-- ── Main content ────────────────────────────── -->
+  <main class="esm-main" [class.login-main]="isLoginPage">
+    <router-outlet (activate)="onActivate($event)"></router-outlet>
   </main>
 
-  <footer class="footer mt-auto py-3 bg-dark text-white">
-    <div class="container text-center">
-      <span>© 2026 All Rights Reserved @Ram Nath</span>
+  <!-- ── Premium Footer ─────────────────────────────────── -->
+  <footer *ngIf="!isLoginPage" class="esm-footer">
+    <div class="footer-inner">
+      <div class="footer-left">
+        <i class="fas fa-crown"></i>
+        <span class="footer-brand">ESM Platform</span>
+      </div>
+      <div class="footer-center">
+        <span>© 2026 Ram Nath</span>
+        <span class="footer-sep">•</span>
+        <span>All rights reserved</span>
+        <span class="footer-sep">•</span>
+        <span>Version 2.0.0</span>
+      </div>
+      <div class="footer-right">
+        <a href="#" class="footer-link"><i class="fab fa-github"></i></a>
+        <a href="#" class="footer-link"><i class="fab fa-linkedin"></i></a>
+        <a href="#" class="footer-link"><i class="fas fa-envelope"></i></a>
+      </div>
     </div>
   </footer>
+
 </div>
+
+<!-- Add Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">

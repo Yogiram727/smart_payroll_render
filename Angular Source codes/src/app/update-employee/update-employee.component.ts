@@ -12,34 +12,25 @@ export class UpdateEmployeeComponent implements OnInit {
   id: number;
   employee: Employee = new Employee();
   errorMessage: string = '';
-  constructor(private employeeService: EmployeeService,
+  successMessage: string = '';
+  currentStep: number = 1;
+
+  constructor(
+    private employeeService: EmployeeService,
     private route: ActivatedRoute,
-    private router: Router) { }
+    private router: Router
+  ) {}
 
-  // ngOnInit(): void {
-  //   this.id = this.route.snapshot.params['id'];
-
-  //   this.employeeService.getEmployeeById(this.id).subscribe(data => {
-  //     this.employee = data;
-  //   }, error => console.log(error));
-  // }
-
-  // onSubmit(){
-  //   //document.write("hello");
-  //   this.employeeService.updateEmployee(this.id, this.employee).subscribe( data =>{
-  //     this.goToEmployeeList();
-  //   }
-  //   , error => console.log(error));
-  // }
-
-  
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
+    this.loadEmployeeDetails();
+  }
 
+  loadEmployeeDetails(): void {
     this.employeeService.getEmployeeById(this.id).subscribe(
       data => {
         this.employee = data;
-        this.errorMessage = ''; // Clear the error message when employee data is retrieved successfully
+        this.errorMessage = '';
       },
       error => {
         console.log(error);
@@ -48,23 +39,40 @@ export class UpdateEmployeeComponent implements OnInit {
     );
   }
 
+  nextStep(): void {
+    if (this.currentStep < 3) {
+      this.currentStep++;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
+  previousStep(): void {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
   onSubmit() {
     this.employeeService.updateEmployee(this.id, this.employee).subscribe(
       () => {
         console.log('Employee updated successfully');
-        this.errorMessage = ''; // Clear the error message when employee is successfully updated
-        this.goToEmployeeList();
+        this.successMessage = 'Employee updated successfully! Redirecting...';
+        this.errorMessage = '';
+        
+        setTimeout(() => {
+          this.goToEmployeeList();
+        }, 2000);
       },
       error => {
         console.error(error);
-        this.errorMessage = error; // Store the error message
+        this.errorMessage = error.message || 'Failed to update employee. Please try again.';
+        this.successMessage = '';
       }
     );
   }
 
-
-  goToEmployeeList(){
+  goToEmployeeList() {
     this.router.navigate(['/employees']);
   }
-
 }

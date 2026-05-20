@@ -1,49 +1,199 @@
-<h3><u><b>Salary Payments</b></u></h3>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>EmpId</th>
-            <th>Date of Salary</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Designation</th>
-            <th>Marital Status</th>
-            <th>Basic Salary</th>
-            <th>Dearness Allowance</th>
-            <th>House Rent Allowance</th>
-            <th>Provident Fund</th>
-            <th>Social Security Fund</th>
-            <th>Medical Insurance</th>
-            <th>Monthly Income Tax</th>
-            <th>Net Monthly Salary</th>
-            <th  style="text-align: center;">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let salary of salaries">
-            <td>{{salary.employeeId}}</td>
-            <td>{{salary.dateofSalary}}</td>
-            <td>{{salary.firstName}}</td>
-            <td>{{salary.lastName}}</td>
-            <td>{{salary.designation}}</td>
-            <td>{{salary.maritalStatus}}</td>
-            <td>{{salary.basicSalary}}</td>
-            <td>{{salary.dearnessAllowance}}</td>
-            <td>{{salary.houseRentAllowance}}</td>
-            <td>{{salary.pfContribution}}</td>
-            <td>{{salary.ssfContribution}}</td>
-            <td>{{salary.medicalInsurance}}</td>
-            <td>{{salary.monthlyIncomeTax}}</td>
-            <td>{{salary.netMonthlySalary}}</td>
-           <td>
-            <div class="d-flex flex-row">
-               <button (click)="updateSalary(salary.id)" class="btn btn-info" style="margin-left: 10px">Update</button>
+<div class="salary-list-container">
+  <!-- Animated Background -->
+  <div class="salary-background">
+    <div class="animated-gradient"></div>
+    <div class="floating-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+  </div>
 
-               <button (click)="deleteSalary(salary.id)" class="btn btn-danger" style="margin-left: 10px">Delete</button>
+  <div class="container-fluid">
+    <!-- Header Section -->
+    <div class="page-header animate__animated animate__fadeInDown">
+      <div class="header-content">
+        <div class="title-section">
+          <i class="fas fa-money-bill-wave header-icon"></i>
+          <div>
+            <h1 class="page-title">Salary Payments</h1>
+            <p class="page-subtitle">Manage and track all employee salary records</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="btn-add" (click)="navigateToAddSalary()">
+            <i class="fas fa-plus-circle"></i>
+            <span>Add New Salary</span>
+          </button>
+        </div>
+      </div>
+    </div>
 
-               <button (click)="salaryDetails(salary.id)" class="btn btn-info" style="margin-left: 10px">View</button>
-            </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
+    <!-- Stats Cards -->
+    <div class="stats-row animate__animated animate__fadeInUp">
+      <div class="stat-card">
+        <div class="stat-icon blue">
+          <i class="fas fa-coins"></i>
+        </div>
+        <div class="stat-info">
+          <h3 class="stat-number">{{ totalRecords }}</h3>
+          <p class="stat-label">Total Records</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon purple">
+          <i class="fas fa-users"></i>
+        </div>
+        <div class="stat-info">
+          <h3 class="stat-number">{{ uniqueEmployees }}</h3>
+          <p class="stat-label">Employees Paid</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon green">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <div class="stat-info">
+          <h3 class="stat-number">{{ totalPayout | number }}</h3>
+          <p class="stat-label">Total Payout (₹)</p>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon orange">
+          <i class="fas fa-calendar"></i>
+        </div>
+        <div class="stat-info">
+          <h3 class="stat-number">{{ avgSalary | number:'1.0-0' }}</h3>
+          <p class="stat-label">Average Salary (₹)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="filters-card animate__animated animate__fadeInUp">
+      <div class="filters-header">
+        <i class="fas fa-search"></i>
+        <span>Search & Filter</span>
+      </div>
+      <div class="filters-body">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input 
+            type="text" 
+            [(ngModel)]="searchTerm" 
+            (input)="onSearch()"
+            placeholder="Search by name, employee ID, designation..."
+            class="search-input"
+          />
+        </div>
+        <div class="filter-group">
+          <select [(ngModel)]="filterMonth" (change)="onFilterChange()" class="filter-select">
+            <option value="">All Months</option>
+            <option *ngFor="let month of monthsList" [value]="month">{{ month }}</option>
+          </select>
+          <select [(ngModel)]="filterYear" (change)="onFilterChange()" class="filter-select">
+            <option value="">All Years</option>
+            <option *ngFor="let year of yearsList" [value]="year">{{ year }}</option>
+          </select>
+        </div>
+        <button class="btn-clear" (click)="clearFilters()">
+          <i class="fas fa-times"></i>
+          Clear Filters
+        </button>
+      </div>
+    </div>
+
+    <!-- Salary Table -->
+    <div class="table-card animate__animated animate__fadeInUp">
+      <div class="table-header">
+        <div class="table-title">
+          <i class="fas fa-list"></i>
+          <span>Salary Records</span>
+        </div>
+        <div class="table-info">
+          Showing {{ filteredSalaries.length }} of {{ totalRecords }} records
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="premium-table">
+          <thead>
+            <tr>
+              <th>Emp ID</th>
+              <th>Employee</th>
+              <th>Salary Month</th>
+              <th>Basic Salary</th>
+              <th>DA</th>
+              <th>HRA</th>
+              <th>PF</th>
+              <th>SSF</th>
+              <th>Insurance</th>
+              <th>Tax</th>
+              <th>Net Salary</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let salary of filteredSalaries | paginate: { itemsPerPage: itemsPerPage, currentPage: currentPage }">
+              <td class="employee-id">{{ salary.employeeId }}</td>
+              <td class="employee-cell">
+                <div class="employee-avatar">
+                  {{ getInitials(salary.firstName, salary.lastName) }}
+                </div>
+                <div class="employee-info">
+                  <div class="employee-name">{{ salary.firstName }} {{ salary.lastName }}</div>
+                  <div class="employee-role">{{ salary.designation }}</div>
+                </div>
+              </td>
+              <td>
+                <span class="month-badge">{{ formatDate(salary.dateofSalary) }}</span>
+              </td>
+              <td class="salary-amount">₹{{ salary.basicSalary | number }}</td>
+              <td>₹{{ salary.dearnessAllowance | number }}</td>
+              <td>₹{{ salary.houseRentAllowance | number }}</td>
+              <td>₹{{ salary.pfContribution | number }}</td>
+              <td>₹{{ salary.ssfContribution | number }}</td>
+              <td>₹{{ salary.medicalInsurance | number }}</td>
+              <td>₹{{ salary.monthlyIncomeTax | number }}</td>
+              <td class="net-salary">
+                <strong>₹{{ salary.netMonthlySalary | number }}</strong>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <button (click)="salaryDetails(salary.id)" class="action-btn view" title="View Details">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  <button (click)="updateSalary(salary.id)" class="action-btn edit" title="Edit Salary">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button (click)="deleteSalary(salary.id)" class="action-btn delete" title="Delete Salary">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            <tr *ngIf="filteredSalaries.length === 0">
+              <td colspan="12" class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <p>No salary records found</p>
+                <button class="btn-add-small" (click)="navigateToAddSalary()">
+                  Add your first salary record
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-wrapper" *ngIf="filteredSalaries.length > itemsPerPage">
+        <pagination-controls 
+          (pageChange)="currentPage = $event"
+          previousLabel="Previous"
+          nextLabel="Next"
+          class="custom-pagination">
+        </pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>

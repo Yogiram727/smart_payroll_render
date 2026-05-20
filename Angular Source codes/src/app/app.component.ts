@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, NavigationEnd } from '@angular/router';
 import { LoginService } from './login.service';
 
 @Component({
@@ -9,8 +9,48 @@ import { LoginService } from './login.service';
 })
 export class AppComponent {
   title = 'Smart Payroll and HR Manager';
+  isLoginPage: boolean = false;
+  currentUser: string = 'Admin';
 
-  constructor(private router: Router, private loginService: LoginService) {}
+  constructor(private router: Router, private loginService: LoginService) {
+    // Listen to route changes
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        // Check if current route is login page
+        this.isLoginPage = event.url === '/login' || event.url === '/';
+        
+        // Update current user if not on login page
+        if (!this.isLoginPage) {
+          const user = sessionStorage.getItem('currentUser');
+          this.currentUser = user || 'Admin';
+        }
+      }
+    });
+  }
+
+  ngOnInit() {
+    // Initial check
+    const currentUrl = this.router.url;
+    this.isLoginPage = currentUrl === '/login' || currentUrl === '/';
+    
+    if (!this.isLoginPage) {
+      const user = sessionStorage.getItem('currentUser');
+      this.currentUser = user || 'Admin';
+    }
+  }
+
+  // Called when a route is activated
+  onActivate(event: any): void {
+    // Check if the activated component is LoginComponent
+    if (event && event.constructor.name === 'LoginComponent') {
+      this.isLoginPage = true;
+    } else {
+      this.isLoginPage = false;
+      // Update user when not on login page
+      const user = sessionStorage.getItem('currentUser');
+      this.currentUser = user || 'Admin';
+    }
+  }
 
   // Logout function
   logout(): void {

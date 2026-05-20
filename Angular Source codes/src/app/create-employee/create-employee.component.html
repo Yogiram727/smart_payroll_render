@@ -1,296 +1,459 @@
-<div class="col-md-6 offset-md-3">
-  <h3 class="mb-4 text-center">
-    <b><u>Add Employee</u></b>
-  </h3>
-  <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" novalidate>
-    <div class="mb-3">
-      <label for="employeeId" class="form-label">Employee ID</label>
-      <input
-        type="text"
-        id="employeeId"
-        required
-        #employeeId="ngModel"
-        [(ngModel)]="employee.employeeId"
-        name="employeeId"
-        class="form-control"
-        [class.is-invalid]="employeeId.invalid && employeeId.touched"
-      />
-      <div
-        *ngIf="employeeId.invalid && employeeId.touched"
-        class="invalid-feedback"
-      >
-        Employee Id is required
-      </div>
+<div class="employee-form-container">
+  <!-- Animated Background -->
+  <div class="form-background">
+    <div class="animated-gradient"></div>
+    <div class="floating-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
     </div>
+  </div>
 
-    <div class="mb-3">
-      <label for="firstName" class="form-label">First Name</label>
-      <input
-        type="text"
-        id="firstName"
-        required
-        #firstName="ngModel"
-        [(ngModel)]="employee.firstName"
-        name="firstName"
-        class="form-control"
-        [class.is-invalid]="firstName.invalid && firstName.touched"
-      />
-      <div
-        *ngIf="firstName.invalid && firstName.touched"
-        class="invalid-feedback"
-      >
-        First Name is required
-      </div>
-    </div>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10">
+        <!-- Form Card -->
+        <div class="form-card animate__animated animate__fadeInUp">
+          <!-- Header -->
+          <div class="form-header">
+            <div class="header-icon">
+              <i class="fas fa-user-plus"></i>
+            </div>
+            <div class="header-text">
+              <h2 class="form-title">Add New Employee</h2>
+              <p class="form-subtitle">Fill in the employee details below</p>
+            </div>
+          </div>
 
-    <div class="mb-3">
-      <label for="lastName" class="form-label">Last Name</label>
-      <input
-        type="text"
-        id="lastName"
-        required
-        #lastName="ngModel"
-        [(ngModel)]="employee.lastName"
-        name="lastName"
-        class="form-control"
-        [class.is-invalid]="lastName.invalid && lastName.touched"
-      />
-      <div
-        *ngIf="lastName.invalid && lastName.touched"
-        class="invalid-feedback"
-      >
-        Last Name is required
-      </div>
-    </div>
+          <!-- Form Body -->
+          <div class="form-body">
+            <form #myForm="ngForm" (ngSubmit)="onSubmit(myForm)" novalidate>
+              <!-- Progress Steps -->
+              <div class="form-progress">
+                <div class="progress-step" [class.active]="currentStep >= 1">
+                  <div class="step-number">1</div>
+                  <div class="step-label">Personal Info</div>
+                </div>
+                <div class="progress-line" [class.active]="currentStep >= 2"></div>
+                <div class="progress-step" [class.active]="currentStep >= 2">
+                  <div class="step-number">2</div>
+                  <div class="step-label">Professional Info</div>
+                </div>
+                <div class="progress-line" [class.active]="currentStep >= 3"></div>
+                <div class="progress-step" [class.active]="currentStep >= 3">
+                  <div class="step-number">3</div>
+                  <div class="step-label">Salary Details</div>
+                </div>
+              </div>
 
-    <div class="mb-3">
-      <label for="email" class="form-label">Email Id</label>
-      <input
-        type="email"
-        id="email"
-        required
-        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
-        #emailInput="ngModel"
-        [(ngModel)]="employee.email"
-        name="email"
-        class="form-control"
-        [class.is-invalid]="emailInput.invalid && emailInput.touched"
-      />
-      <div
-        *ngIf="emailInput.invalid && emailInput.touched"
-        class="invalid-feedback"
-      >
-        <div *ngIf="emailInput.errors?.['required']">Email is required</div>
-        <div *ngIf="emailInput.errors?.['pattern']">Invalid email format</div>
-      </div>
-    </div>
+              <!-- Step 1: Personal Information -->
+              <div class="form-section" *ngIf="currentStep === 1">
+                <h3 class="section-title">
+                  <i class="fas fa-user-circle"></i>
+                  Personal Information
+                </h3>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="employeeId" class="form-label">
+                        <i class="fas fa-id-badge"></i>
+                        Employee ID
+                      </label>
+                      <input
+                        type="text"
+                        id="employeeId"
+                        required
+                        #employeeId="ngModel"
+                        [(ngModel)]="employee.employeeId"
+                        name="employeeId"
+                        class="form-control-modern"
+                        [class.is-invalid]="employeeId.invalid && employeeId.touched"
+                        placeholder="EMP001"
+                      />
+                      <div *ngIf="employeeId.invalid && employeeId.touched" class="invalid-feedback">
+                        <i class="fas fa-exclamation-circle"></i> Employee ID is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="firstName" class="form-label">
+                        <i class="fas fa-user"></i>
+                        First Name
+                      </label>
+                      <input
+                        type="text"
+                        id="firstName"
+                        required
+                        #firstName="ngModel"
+                        [(ngModel)]="employee.firstName"
+                        name="firstName"
+                        class="form-control-modern"
+                        [class.is-invalid]="firstName.invalid && firstName.touched"
+                        placeholder="John"
+                      />
+                      <div *ngIf="firstName.invalid && firstName.touched" class="invalid-feedback">
+                        <i class="fas fa-exclamation-circle"></i> First Name is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="lastName" class="form-label">
+                        <i class="fas fa-user"></i>
+                        Last Name
+                      </label>
+                      <input
+                        type="text"
+                        id="lastName"
+                        required
+                        #lastName="ngModel"
+                        [(ngModel)]="employee.lastName"
+                        name="lastName"
+                        class="form-control-modern"
+                        [class.is-invalid]="lastName.invalid && lastName.touched"
+                        placeholder="Doe"
+                      />
+                      <div *ngIf="lastName.invalid && lastName.touched" class="invalid-feedback">
+                        <i class="fas fa-exclamation-circle"></i> Last Name is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="email" class="form-label">
+                        <i class="fas fa-envelope"></i>
+                        Email Address
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        required
+                        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                        #emailInput="ngModel"
+                        [(ngModel)]="employee.email"
+                        name="email"
+                        class="form-control-modern"
+                        [class.is-invalid]="emailInput.invalid && emailInput.touched"
+                        placeholder="john.doe@example.com"
+                      />
+                      <div *ngIf="emailInput.invalid && emailInput.touched" class="invalid-feedback">
+                        <div *ngIf="emailInput.errors?.['required']">
+                          <i class="fas fa-exclamation-circle"></i> Email is required
+                        </div>
+                        <div *ngIf="emailInput.errors?.['pattern']">
+                          <i class="fas fa-exclamation-circle"></i> Invalid email format
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="dateofBirth" class="form-label">
+                        <i class="fas fa-calendar-alt"></i>
+                        Date of Birth
+                      </label>
+                      <input
+                        type="date"
+                        id="dateofBirth"
+                        required
+                        #dateofBirth="ngModel"
+                        [(ngModel)]="employee.dateofBirth"
+                        name="dateofBirth"
+                        class="form-control-modern"
+                        [class.is-invalid]="dateofBirth.invalid && dateofBirth.touched"
+                      />
+                      <div *ngIf="dateofBirth.invalid && dateofBirth.touched" class="invalid-feedback">
+                        <i class="fas fa-exclamation-circle"></i> Date of Birth is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="gender" class="form-label">
+                        <i class="fas fa-venus-mars"></i>
+                        Gender
+                      </label>
+                      <select
+                        id="gender"
+                        required
+                        [(ngModel)]="employee.gender"
+                        name="gender"
+                        #gender="ngModel"
+                        class="form-control-modern"
+                        [class.is-invalid]="gender.invalid && gender.touched"
+                      >
+                        <option value="" disabled hidden>Select Gender</option>
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                      </select>
+                      <div *ngIf="gender.invalid && gender.touched" class="invalid-feedback">
+                        <i class="fas fa-exclamation-circle"></i> Gender is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="maritalStatus" class="form-label">
+                        <i class="fas fa-heart"></i>
+                        Marital Status
+                      </label>
+                      <select
+                        id="maritalStatus"
+                        required
+                        [(ngModel)]="employee.maritalStatus"
+                        name="maritalStatus"
+                        #maritalStatus="ngModel"
+                        class="form-control-modern"
+                        [class.is-invalid]="maritalStatus.invalid && maritalStatus.touched"
+                      >
+                        <option value="" disabled hidden>Select Marital Status</option>
+                        <option>Married</option>
+                        <option>Unmarried</option>
+                      </select>
+                      <div *ngIf="maritalStatus.invalid && maritalStatus.touched" class="invalid-feedback">
+                        <i class="fas fa-exclamation-circle"></i> Marital Status is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="address" class="form-label">
+                        <i class="fas fa-map-marker-alt"></i>
+                        Address
+                      </label>
+                      <textarea
+                        id="address"
+                        required
+                        #address="ngModel"
+                        [(ngModel)]="employee.address"
+                        name="address"
+                        class="form-control-modern"
+                        rows="3"
+                        [class.is-invalid]="address.invalid && address.touched"
+                        placeholder="Enter complete address"
+                      ></textarea>
+                      <div *ngIf="address.invalid && address.touched" class="invalid-feedback">
+                        <i class="fas fa-exclamation-circle"></i> Address is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="phoneNumber" class="form-label">
+                        <i class="fas fa-phone-alt"></i>
+                        Phone Number
+                      </label>
+                      <input
+                        type="tel"
+                        id="phoneNumber"
+                        pattern="^\d{10}$"
+                        required
+                        #phoneNumber="ngModel"
+                        [(ngModel)]="employee.phoneNumber"
+                        name="phoneNumber"
+                        class="form-control-modern"
+                        [class.is-invalid]="phoneNumber.invalid && phoneNumber.touched"
+                        placeholder="9876543210"
+                      />
+                      <div *ngIf="phoneNumber.invalid && phoneNumber.touched" class="invalid-feedback">
+                        <div *ngIf="phoneNumber.errors?.['required']">
+                          <i class="fas fa-exclamation-circle"></i> Phone number is required
+                        </div>
+                        <div *ngIf="phoneNumber.errors?.['pattern']">
+                          <i class="fas fa-exclamation-circle"></i> Phone number must be 10 digits
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-    <div class="mb-3">
-      <label for="dateofBirth" class="form-label">Date of Birth</label>
-      <input
-        type="date"
-        id="dateofBirth"
-        required
-        #dateofBirth="ngModel"
-        [(ngModel)]="employee.dateofBirth"
-        name="dateofBirth"
-        class="form-control"
-        [class.is-invalid]="dateofBirth.invalid && dateofBirth.touched"
-      />
-      <div
-        *ngIf="dateofBirth.invalid && dateofBirth.touched"
-        class="invalid-feedback"
-      >
-        Date of Birth is required
-      </div>
-    </div>
+              <!-- Step 2: Professional Information -->
+              <div class="form-section" *ngIf="currentStep === 2">
+                <h3 class="section-title">
+                  <i class="fas fa-briefcase"></i>
+                  Professional Information
+                </h3>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="designation" class="form-label">
+                        <i class="fas fa-tag"></i>
+                        Designation
+                      </label>
+                      <select
+                        id="designation"
+                        required
+                        [(ngModel)]="employee.designation"
+                        name="designation"
+                        #designation="ngModel"
+                        class="form-control-modern"
+                        [class.is-invalid]="designation.invalid && designation.touched"
+                      >
+                        <option value="" disabled hidden>Select Designation</option>
+                        <option>Manager</option>
+                        <option>Senior Developer</option>
+                        <option>Employee</option>
+                        <option>Supervisor</option>
+                        <option>Intern</option>
+                        <option>HR</option>
+                        <option>Accountant</option>
+                      </select>
+                      <div *ngIf="designation.invalid && designation.touched" class="invalid-feedback">
+                        <i class="fas fa-exclamation-circle"></i> Designation is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="department" class="form-label">
+                        <i class="fas fa-building"></i>
+                        Department
+                      </label>
+                      <select
+                        id="department"
+                        required
+                        [(ngModel)]="employee.department"
+                        name="department"
+                        #department="ngModel"
+                        class="form-control-modern"
+                        [class.is-invalid]="department.invalid && department.touched"
+                      >
+                        <option value="" disabled hidden>Select Department</option>
+                        <option>Information Technology</option>
+                        <option>Marketing</option>
+                        <option>Finance</option>
+                        <option>Human Resources</option>
+                        <option>Sales</option>
+                        <option>Operations</option>
+                      </select>
+                      <div *ngIf="department.invalid && department.touched" class="invalid-feedback">
+                        <i class="fas fa-exclamation-circle"></i> Department is required
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="dateofJoining" class="form-label">
+                        <i class="fas fa-calendar-check"></i>
+                        Date of Joining
+                      </label>
+                      <input
+                        type="date"
+                        id="dateofJoining"
+                        required
+                        #dateofJoining="ngModel"
+                        [(ngModel)]="employee.dateofJoining"
+                        name="dateofJoining"
+                        class="form-control-modern"
+                        [class.is-invalid]="dateofJoining.invalid && dateofJoining.touched"
+                      />
+                      <div *ngIf="dateofJoining.invalid && dateofJoining.touched" class="invalid-feedback">
+                        <i class="fas fa-exclamation-circle"></i> Date of Joining is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-    <div class="mb-3">
-      <label for="gender" class="form-label">Gender</label>
-      <select
-        id="gender"
-        required
-        [(ngModel)]="employee.gender"
-        name="gender"
-        #gender="ngModel"
-        class="form-select"
-        [class.is-invalid]="gender.invalid && gender.touched"
-      >
-        <option value="" disabled hidden>Select Gender</option>
-        <option>Male</option>
-        <option>Female</option>
-      </select>
-      <div *ngIf="gender.invalid && gender.touched" class="invalid-feedback">
-        Gender is required.
-      </div>
-    </div>
+              <!-- Step 3: Salary Details -->
+              <div class="form-section" *ngIf="currentStep === 3">
+                <h3 class="section-title">
+                  <i class="fas fa-money-bill-wave"></i>
+                  Salary Details
+                </h3>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="basicSalary" class="form-label">
+                        <i class="fas fa-rupee-sign"></i>
+                        Basic Salary
+                      </label>
+                      <input
+                        type="number"
+                        id="basicSalary"
+                        required
+                        #basicSalary="ngModel"
+                        [(ngModel)]="employee.basicSalary"
+                        name="basicSalary"
+                        class="form-control-modern"
+                        [class.is-invalid]="basicSalary.invalid && basicSalary.touched"
+                        placeholder="50000"
+                      />
+                      <div *ngIf="basicSalary.invalid && basicSalary.touched" class="invalid-feedback">
+                        <i class="fas fa-exclamation-circle"></i> Basic Salary is required
+                      </div>
+                    </div>
+                  </div>
+                </div>
 
-    <div class="mb-3">
-      <label for="address" class="form-label">Address</label>
-      <input
-        type="text"
-        id="address"
-        required
-        #address="ngModel"
-        [(ngModel)]="employee.address"
-        name="address"
-        class="form-control"
-        [class.is-invalid]="address.invalid && address.touched"
-      />
-      <div *ngIf="address.invalid && address.touched" class="invalid-feedback">
-        Address is required
-      </div>
-    </div>
+                <!-- Salary Preview -->
+                <div class="salary-preview" *ngIf="employee.basicSalary">
+                  <h4>Salary Breakdown</h4>
+                  <div class="preview-item">
+                    <span>Basic Salary:</span>
+                    <strong>₹{{ employee.basicSalary | number }}</strong>
+                  </div>
+                  <div class="preview-item">
+                    <span>HRA (40%):</span>
+                    <strong>₹{{ employee.basicSalary * 0.4 | number }}</strong>
+                  </div>
+                  <div class="preview-item">
+                    <span>DA (20%):</span>
+                    <strong>₹{{ employee.basicSalary * 0.2 | number }}</strong>
+                  </div>
+                  <div class="preview-item total">
+                    <span>Total CTC:</span>
+                    <strong>₹{{ employee.basicSalary * 1.6 | number }}</strong>
+                  </div>
+                </div>
+              </div>
 
-    <div class="mb-3">
-      <label for="phoneNumber" class="form-label">Phone Number</label>
-      <input
-        type="tel"
-        id="phoneNumber"
-        pattern="^\d{10}$"
-        required
-        #phoneNumber="ngModel"
-        [(ngModel)]="employee.phoneNumber"
-        name="phoneNumber"
-        class="form-control"
-        [class.is-invalid]="phoneNumber.invalid && phoneNumber.touched"
-      />
-      <div
-        *ngIf="phoneNumber.invalid && phoneNumber.touched"
-        class="invalid-feedback"
-      >
-        <div *ngIf="phoneNumber.errors?.['required']">
-          Phone number is required
+              <!-- Form Navigation Buttons -->
+              <div class="form-navigation">
+                <button 
+                  type="button" 
+                  class="btn-nav prev" 
+                  *ngIf="currentStep > 1"
+                  (click)="previousStep()">
+                  <i class="fas fa-arrow-left"></i>
+                  Previous
+                </button>
+                <button 
+                  type="button" 
+                  class="btn-nav next" 
+                  *ngIf="currentStep < 3"
+                  (click)="nextStep()">
+                  Next
+                  <i class="fas fa-arrow-right"></i>
+                </button>
+                <button 
+                  type="submit" 
+                  class="btn-submit" 
+                  *ngIf="currentStep === 3"
+                  [disabled]="myForm.invalid">
+                  <i class="fas fa-check-circle"></i>
+                  Create Employee
+                </button>
+              </div>
+
+              <!-- Error Message -->
+              <div *ngIf="errorMessage" class="alert alert-danger mt-3 animate__animated animate__shakeX">
+                <i class="fas fa-exclamation-triangle"></i>
+                {{ errorMessage }}
+              </div>
+
+              <!-- Success Message -->
+              <div *ngIf="successMessage" class="alert alert-success mt-3 animate__animated animate__fadeIn">
+                <i class="fas fa-check-circle"></i>
+                {{ successMessage }}
+              </div>
+            </form>
+          </div>
         </div>
-        <div *ngIf="phoneNumber.errors?.['pattern']">
-          Phone number must be of 10 digits
-        </div>
       </div>
     </div>
-
-    <div class="mb-3">
-      <label for="designation" class="form-label">Designation</label>
-      <select
-        id="designation"
-        required
-        [(ngModel)]="employee.designation"
-        name="designation"
-        #designation="ngModel"
-        class="form-select"
-        [class.is-invalid]="designation.invalid && designation.touched"
-      >
-        <option value="" disabled hidden>Select Designation</option>
-        <option>Manager</option>
-        <option>Employee</option>
-        <option>Supervisor</option>
-        <option>Intern</option>
-        <option>HR</option>
-      </select>
-      <div
-        *ngIf="designation.invalid && designation.touched"
-        class="invalid-feedback"
-      >
-        Designation is required.
-      </div>
-    </div>
-
-    <div class="mb-3">
-      <label for="department" class="form-label">Department</label>
-      <select
-        id="department"
-        required
-        [(ngModel)]="employee.department"
-        name="department"
-        #department="ngModel"
-        class="form-select"
-        [class.is-invalid]="department.invalid && department.touched"
-      >
-        <option value="" disabled hidden>Select Department</option>
-        <option>Information Technology</option>
-        <option>Marketing</option>
-        <option>Finance</option>
-      </select>
-      <div
-        *ngIf="department.invalid && department.touched"
-        class="invalid-feedback"
-      >
-        Department is required.
-      </div>
-    </div>
-
-    <div class="mb-3">
-      <label for="maritalStatus" class="form-label">Marital Status</label>
-      <select
-        id="maritalStatus"
-        required
-        [(ngModel)]="employee.maritalStatus"
-        name="maritalStatus"
-        #maritalStatus="ngModel"
-        class="form-select"
-        [class.is-invalid]="maritalStatus.invalid && maritalStatus.touched"
-      >
-        <option value="" disabled hidden>Select Marital Status</option>
-        <option>Married</option>
-        <option>Unmarried</option>
-      </select>
-      <div
-        *ngIf="maritalStatus.invalid && maritalStatus.touched"
-        class="invalid-feedback"
-      >
-        Marital Status is required.
-      </div>
-    </div>
-
-    <div class="mb-3">
-      <label for="dateofJoining" class="form-label">Date of Joining</label>
-      <input
-        type="date"
-        id="dateofJoining"
-        required
-        #dateofJoining="ngModel"
-        [(ngModel)]="employee.dateofJoining"
-        name="dateofJoining"
-        class="form-control"
-        [class.is-invalid]="dateofJoining.invalid && dateofJoining.touched"
-      />
-      <div
-        *ngIf="dateofJoining.invalid && dateofJoining.touched"
-        class="invalid-feedback"
-      >
-        Date of Joining is required
-      </div>
-    </div>
-
-    <div class="mb-4">
-      <label for="basicSalary" class="form-label">Basic Salary</label>
-      <input
-        type="number"
-        id="basicSalary"
-        required
-        #basicSalary="ngModel"
-        [(ngModel)]="employee.basicSalary"
-        name="basicSalary"
-        class="form-control"
-        [class.is-invalid]="basicSalary.invalid && basicSalary.touched"
-      />
-      <div
-        *ngIf="basicSalary.invalid && basicSalary.touched"
-        class="invalid-feedback"
-      >
-        Basic Salary is required
-      </div>
-    </div>
-
-    <button
-      class="btn btn-success w-100 fw-bold"
-      type="submit"
-      [disabled]="myForm.invalid"
-    >
-      Submit
-    </button>
-
-    <div *ngIf="errorMessage" class="alert alert-danger mt-3">
-      {{ errorMessage }}
-    </div>
-  </form>
+  </div>
 </div>

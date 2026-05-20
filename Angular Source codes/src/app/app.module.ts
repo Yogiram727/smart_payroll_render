@@ -17,6 +17,7 @@ import { SalaryDetailsComponent } from './salary-details/salary-details.componen
 import { LoginComponent } from './login/login.component';
 import { AuthGuardComponent } from './auth-guard/auth-guard.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     LoginComponent,
     AuthGuardComponent,
     DashboardComponent
+    // REMOVED NgxPaginationModule from here
   ],
   imports: [
     BrowserModule,
@@ -39,6 +41,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     NgChartsModule,
     HttpClientModule,
     FormsModule,
+    NgxPaginationModule // ADDED NgxPaginationModule here
   ],
   providers: [],
   bootstrap: [AppComponent]

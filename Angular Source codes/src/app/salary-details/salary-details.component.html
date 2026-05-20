@@ -1,119 +1,196 @@
-<style>
-  @media print {
-    @page {
-      size: auto;
-      margin: 0;
-    }
-    body {
-      margin: 1.6cm;
-    }
-    button {
-      display: none; /* Hide print button */
-    }
-  }
+<div class="salary-container">
+  <!-- Animated Background -->
+  <div class="salary-background">
+    <div class="animated-gradient"></div>
+    <div class="floating-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+    </div>
+  </div>
 
-  #printContent {
-    width: 600px;
-    margin: auto;
-    border: 1px solid #000;
-    padding: 25px;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f9f9f9;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10">
+        <!-- Salary Card -->
+        <div class="salary-card animate__animated animate__fadeInUp">
+          
+          <!-- Header -->
+          <div class="salary-header">
+            <div class="header-icon">
+              <i class="fas fa-file-invoice-dollar"></i>
+            </div>
+            <div class="header-text">
+              <h2 class="salary-title">Salary Details</h2>
+              <p class="salary-subtitle">Employee salary information & breakdown</p>
+            </div>
+            <div class="header-badge">
+              <i class="fas fa-print"></i>
+              Payslip
+            </div>
+          </div>
 
-  h2 {
-    text-align: center;
-    text-transform: uppercase;
-    margin-bottom: 20px;
-    border-bottom: 2px solid #000;
-    padding-bottom: 10px;
-  }
+          <!-- Print Content -->
+          <div id="printContent" class="print-content">
+            <!-- Company Header for Print -->
+            <div class="print-header">
+              <div class="company-logo">
+                <svg width="50" height="50" viewBox="0 0 32 32" fill="none">
+                  <rect x="2" y="2" width="12" height="12" rx="3" fill="#667eea"/>
+                  <rect x="18" y="2" width="12" height="12" rx="3" fill="rgba(102,126,234,0.4)"/>
+                  <rect x="2" y="18" width="12" height="12" rx="3" fill="rgba(102,126,234,0.4)"/>
+                  <rect x="18" y="18" width="12" height="12" rx="3" fill="rgba(102,126,234,0.7)"/>
+                </svg>
+              </div>
+              <div class="company-info">
+                <h2>ESM Platform</h2>
+                <p>Employee Salary Management System</p>
+                <p class="print-date">Generated: {{ currentDate | date: 'fullDate' }}</p>
+              </div>
+            </div>
 
-  .row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 12px;
-  }
+            <h3 class="print-title">SALARY DETAILS SLIP</h3>
 
-  .label {
-    font-weight: bold;
-    width: 45%;
-  }
+            <!-- Two Column Layout -->
+            <div class="salary-grid">
+              <!-- Left Column -->
+              <div class="salary-section">
+                <div class="section-header">
+                  <i class="fas fa-user"></i>
+                  <h4>Employee Information</h4>
+                </div>
+                <div class="info-row">
+                  <span class="label">Employee ID:</span>
+                  <span class="value">{{ salary.employeeId }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">First Name:</span>
+                  <span class="value">{{ salary.firstName }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Last Name:</span>
+                  <span class="value">{{ salary.lastName }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Designation:</span>
+                  <span class="value">{{ salary.designation }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Marital Status:</span>
+                  <span class="value">{{ salary.maritalStatus }}</span>
+                </div>
+              </div>
 
-  .value {
-    width: 50%;
-    text-align: left;
-  }
+              <!-- Right Column -->
+              <div class="salary-section">
+                <div class="section-header">
+                  <i class="fas fa-calendar-alt"></i>
+                  <h4>Salary Information</h4>
+                </div>
+                <div class="info-row">
+                  <span class="label">Salary Date:</span>
+                  <span class="value">{{ salary.dateofSalary | date: 'MMMM yyyy' }}</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Payment Status:</span>
+                  <span class="value status-paid">Paid</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Payment Method:</span>
+                  <span class="value">Bank Transfer</span>
+                </div>
+              </div>
+            </div>
 
-  button {
-    margin: 20px auto;
-    display: block;
-    padding: 10px 20px;
-    font-size: 16px;
-  }
-</style>
+            <!-- Earnings Breakdown -->
+            <div class="salary-section full-width">
+              <div class="section-header">
+                <i class="fas fa-chart-line"></i>
+                <h4>Earnings Breakdown</h4>
+              </div>
+              <div class="earnings-table">
+                <div class="earning-row">
+                  <span>Basic Salary</span>
+                  <strong>₹{{ salary.basicSalary | number }}</strong>
+                </div>
+                <div class="earning-row">
+                  <span>Dearness Allowance (DA)</span>
+                  <strong>₹{{ salary.dearnessAllowance | number }}</strong>
+                </div>
+                <div class="earning-row">
+                  <span>House Rent Allowance (HRA)</span>
+                  <strong>₹{{ salary.houseRentAllowance | number }}</strong>
+                </div>
+                <div class="earning-row total">
+                  <span>Total Earnings</span>
+                  <strong>₹{{ getTotalEarnings() | number }}</strong>
+                </div>
+              </div>
+            </div>
 
-<div id="printContent">
-  <h2>Salary Details Slip</h2>
+            <!-- Deductions Breakdown -->
+            <div class="salary-section full-width">
+              <div class="section-header">
+                <i class="fas fa-minus-circle"></i>
+                <h4>Deductions</h4>
+              </div>
+              <div class="earnings-table">
+                <div class="earning-row">
+                  <span>Provident Fund (PF)</span>
+                  <strong>₹{{ salary.pfContribution | number }}</strong>
+                </div>
+                <div class="earning-row">
+                  <span>Social Security Fund (SSF)</span>
+                  <strong>₹{{ salary.ssfContribution | number }}</strong>
+                </div>
+                <div class="earning-row">
+                  <span>Medical Insurance</span>
+                  <strong>₹{{ salary.medicalInsurance | number }}</strong>
+                </div>
+                <div class="earning-row">
+                  <span>Monthly Income Tax (TDS)</span>
+                  <strong>₹{{ salary.monthlyIncomeTax | number }}</strong>
+                </div>
+                <div class="earning-row total">
+                  <span>Total Deductions</span>
+                  <strong>₹{{ getTotalDeductions() | number }}</strong>
+                </div>
+              </div>
+            </div>
 
-  <div class="row">
-    <div class="label">Employee ID:</div>
-    <div class="value">{{ salary.employeeId }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Salary Date:</div>
-    <div class="value">{{ salary.dateofSalary }}</div>
-  </div>
-  <div class="row">
-    <div class="label">First Name:</div>
-    <div class="value">{{ salary.firstName }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Last Name:</div>
-    <div class="value">{{ salary.lastName }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Designation:</div>
-    <div class="value">{{ salary.designation }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Marital Status:</div>
-    <div class="value">{{ salary.maritalStatus }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Basic Salary:</div>
-    <div class="value">{{ salary.basicSalary }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Dearness Allowance:</div>
-    <div class="value">{{ salary.dearnessAllowance }}</div>
-  </div>
-  <div class="row">
-    <div class="label">House Rent Allowance:</div>
-    <div class="value">{{ salary.houseRentAllowance }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Provident Fund:</div>
-    <div class="value">{{ salary.pfContribution }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Social Security Fund:</div>
-    <div class="value">{{ salary.ssfContribution }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Medical Insurance:</div>
-    <div class="value">{{ salary.medicalInsurance }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Monthly Income Tax:</div>
-    <div class="value">{{ salary.monthlyIncomeTax }}</div>
-  </div>
-  <div class="row">
-    <div class="label">Net Monthly Salary:</div>
-    <div class="value">{{ salary.netMonthlySalary }}</div>
+            <!-- Net Salary Summary -->
+            <div class="net-salary-card">
+              <div class="net-salary-label">Net Monthly Salary</div>
+              <div class="net-salary-amount">₹{{ salary.netMonthlySalary | number }}</div>
+              <div class="net-salary-text">(In Words: {{ convertToWords(salary.netMonthlySalary) }})</div>
+            </div>
+
+            <!-- Footer Notes -->
+            <div class="print-footer">
+              <div class="note">
+                <i class="fas fa-info-circle"></i>
+                This is a computer-generated document and requires no signature.
+              </div>
+              <div class="signature">
+                <div>For ESM Platform</div>
+                <div class="sign-line">Authorized Signatory</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <button class="btn-print" (click)="printSalaryDetails()">
+              <i class="fas fa-print"></i>
+              Print Salary Slip
+            </button>
+            <button class="btn-back" (click)="goBack()">
+              <i class="fas fa-arrow-left"></i>
+              Back to List
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-
-<!-- Print Button -->
-<button (click)="printSalaryDetails()">Print</button>
